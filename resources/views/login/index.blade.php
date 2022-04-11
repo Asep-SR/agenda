@@ -49,12 +49,12 @@
                             <label for="email">Email address</label>
                             <input type="email" id="email" name="email" class="@error('email') is-invalid @enderror" value="{{ old('email') }}" required>
                             <i class="ti-email"></i>
-                            @error('email')
-                                <div class="invalid-feedback">
+
+                            <div class="text-danger">
+                                @error('email')
                                     {{ $message }}
-                                </div>
-                            @enderror
-                            <div class="text-danger"></div>
+                                @enderror
+                            </div>
                         </div>
                         <div class="form-gp">
                             <label for="password">Password</label>
