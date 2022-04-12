@@ -4,10 +4,16 @@
 <link rel="stylesheet" href="{{ asset('assets/js/fullcalendar/lib/main.min.css') }}">
 @endsection
 
+@section('page-title', 'Dashboard')
+
 @section('content')
 <div class="main-content-inner">
     <div class="row">
-        <div id='calendar' class="col-lg-6 mt-4"></div>
+        <div class="card col-lg-6 mt-4">
+            <div class="card-body">
+                <div id='calendar'></div>
+            </div>
+        </div>
     </div>
 </div>
 @endsection
