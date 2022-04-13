@@ -69,7 +69,9 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('dashboard.manajemen-user.edit');
+        return view('dashboard.manajemen-user.edit', [
+            'user' => $user
+        ]);
     }
 
     /**
@@ -81,7 +83,18 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|confirmed|min:6',
+        ]);
+
+        $validated['password'] = bcrypt($request->password);
+
+        User::where('id', $user->id)
+            ->update($validated);
+
+        return redirect('/dashboard/manajemen-user')->with('success', 'Berhasil mengubah user');
     }
 
     /**

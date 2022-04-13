@@ -46,7 +46,7 @@
                                     <td>{{ $user->email }}</td>
                                     <td>{{ $user->is_admin }}</td>
                                     <td>
-                                        <a href="/dashboard/manajemen-user/{{ $user->id }}" class="btn btn-primary"><i class="ti-search"></i></a>
+                                        {{-- <a href="/dashboard/manajemen-user/{{ $user->id }}" class="btn btn-primary"><i class="ti-search"></i></a> --}}
                                         <a href="/dashboard/manajemen-user/{{ $user->id }}/edit" class="btn btn-warning"><i class="ti-pencil-alt"></i></a>
                                         <form action="/dashboard/manajemen-user/{{ $user->id }}" method="post" class="d-inline">
                                             @method('delete')
