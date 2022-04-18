@@ -109,4 +109,32 @@ class UserController extends Controller
 
         return redirect('/dashboard/manajemen-user')->with('success', 'Berhasil menghapus user');
     }
+
+    public function setting()
+    {
+        return view('dashboard.setting.index', [
+            'user' => auth()->user()
+        ]);
+    }
+
+    public function settingStore(Request $request)
+    {
+        $rules = [
+            'name' => 'required',
+            'password' => 'required|confirmed|min:6',
+        ];
+
+        if($request->email != auth()->user()->email) {
+            $rules['email'] = 'required|email|unique:users';
+        }
+
+        $validated = $request->validate($rules);
+
+        $validated['password'] = bcrypt($request->password);
+
+        User::where('id', auth()->user()->id)
+            ->update($validated);
+
+        return redirect('/dashboard/setting')->with('success', 'Berhasil mengubah user');
+    }
 }

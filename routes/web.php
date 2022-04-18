@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\SkpdController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -29,4 +30,11 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('aut
 
 Route::resource('/dashboard/manajemen-user', UserController::class)->parameters([
     'manajemen-user' => 'user',
-])->middleware('auth');
+])->middleware(['auth', 'admin']);
+
+Route::resource('/dashboard/daftar-skpd', SkpdController::class)->parameters([
+    'daftar-skpd' => 'skpd'
+])->middleware(['auth', 'admin']);
+
+Route::get('/dashboard/setting/', [UserController::class, 'setting'])->middleware('auth');
+Route::put('/dashboard/setting/{user}', [UserController::class, 'settingStore'])->middleware('auth');
