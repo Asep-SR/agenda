@@ -101,6 +101,6 @@ class SkpdController extends Controller
     {
         Skpd::destroy($skpd->id);
 
-        return redirect('/dashboard/daftar-skpd')->with('success', 'Berhasil menghapus user');
+        return redirect('/dashboard/daftar-skpd')->with('success', 'Berhasil menghapus data SKPD');
     }
 }
