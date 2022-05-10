@@ -16,7 +16,7 @@
         <!-- Dark table start -->
         <div class="col-12 mt-5">
             @if(session()->has('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <div class="alert alert-success alert-dismissible fade show py-4" role="alert">
                 {{ session('success') }}
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span class="fa fa-times"></span>
@@ -35,6 +35,7 @@
                                     <th>Nama User</th>
                                     <th>Email</th>
                                     <th>Role</th>
+                                    <th>Instansi</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -44,7 +45,8 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
-                                    <td>{{ $user->is_admin }}</td>
+                                    <td>@if ($user->is_admin == 1) Admin @else User @endif</td>
+                                    <td>@if ($user->skpd != null || '') {{ $user->skpd->alias }} @endif</td>
                                     <td>
                                         {{-- <a href="/dashboard/manajemen-user/{{ $user->id }}" class="btn btn-primary"><i class="ti-search"></i></a> --}}
                                         <a href="/dashboard/manajemen-user/{{ $user->id }}/edit" class="btn btn-warning"><i class="ti-pencil-alt"></i></a>

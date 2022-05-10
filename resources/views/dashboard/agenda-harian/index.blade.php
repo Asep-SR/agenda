@@ -10,7 +10,7 @@
 <div class="main-content-inner">
     {{-- Alert --}}
     @if(session()->has('success'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <div class="alert alert-success alert-dismissible fade show py-4" role="alert">
         {{ session('success') }}
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span class="fa fa-times"></span>
@@ -45,7 +45,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Tambah Agenda</h5>
+          <h5 class="modal-title" id="tambahAgendaModalLabel">Tambah Agenda</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -69,6 +69,11 @@
                     <label for="start">Waktu Selesai</label>
                     <input type="text" class="form-control datetimepicker-input" id="end" name="end" data-toggle="datetimepicker" data-target="#end">
                 </div>
+                <div class="form-group">
+                    <label for="file">File</label>
+                    <br>
+                    <input type="file" class="file-upload-info file" id="file" name="file">
+                </div>
             </form>
         </div>
         <div class="modal-footer">
@@ -77,7 +82,52 @@
         </div>
       </div>
     </div>
-  </div>
+</div>
+
+{{-- Modal Lihat Agenda --}}
+<div class="modal fade" id="lihatAgenda" tabindex="-1" role="dialog" aria-labelledby="lihatAgendaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="lihatAgendaModalLabel">Detail Agenda</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-12">
+                    <table class="table">
+                        <tr>
+                            <th class="w-25">Nama Instansi</th>
+                            <td id="detailSKPD"></td>
+                        </tr>
+                        <tr>
+                            <th class="w-25">Nama Agenda</th>
+                            <td id="detailAgenda"></td>
+                        </tr>
+                        <tr>
+                            <th class="w-25">Waktu Mulai</th>
+                            <td id="detailStart"></td>
+                        </tr>
+                        <tr>
+                            <th class="w-25">Waktu Selesai</th>
+                            <td id="detailEnd"></td>
+                        </tr>
+                        <tr>
+                            <th class="w-25">File</th>
+                            <td id="detailFile"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+</div>
 @endsection
 
 @section('js')
@@ -109,13 +159,17 @@
         },
         selectable: true,
         initialView: 'dayGridMonth',
-        events: [
-            { // this object will be "parsed" into an Event Object
-            title: 'The Title', // a property!
-            start: '2022-05-09 10:00', // a property!
-            end: '2022-05-09 10:00' // a property! ** see important note below about 'end' **
-            }
+        eventSources: [
+            '/dashboard/agenda-harian/fetch',
         ],
+        eventClick: function(info) {
+            // alert('Event: ' + info.event.title);
+            $('#lihatAgenda').modal('show');
+            $('#detailSKPD').html("-");
+            $('#detailAgenda').html(info.event.title);
+            $('#detailStart').html(info.event.start);
+            $('#detailEnd').html(info.event.end);
+        }
       });
       calendar.render();
     });

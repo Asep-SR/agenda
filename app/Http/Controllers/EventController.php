@@ -23,4 +23,11 @@ class EventController extends Controller
 
         return redirect()->back()->with('success', 'Berhasil menambahkan agenda baru');
     }
+
+    public function fetch()
+    {
+        $events = Event::all();
+
+        return response()->json($events);
+    }
 }

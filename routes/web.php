@@ -48,3 +48,4 @@ Route::put('/dashboard/setting/{user}', [UserController::class, 'settingStore'])
 // Agenda Harian
 Route::get('/dashboard/agenda-harian', [EventController::class, 'index'])->middleware('auth');
 Route::post('/dashboard/agenda-harian', [EventController::class, 'storeEvent'])->middleware('auth');
+Route::get('/dashboard/agenda-harian/fetch', [EventController::class, 'fetch'])->middleware('auth');

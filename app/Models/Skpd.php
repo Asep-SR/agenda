@@ -12,4 +12,9 @@ class Skpd extends Model
     protected $table = "skpd";
 
     protected $guarded = [];
+
+    public function user()
+    {
+        return $this->hasMany(User::class, 'skpd_id');
+    }
 }

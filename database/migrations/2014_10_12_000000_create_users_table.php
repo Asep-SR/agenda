@@ -21,6 +21,9 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+            $table->boolean('is_admin')->nullable();
+            $table->boolean('is_bupati')->nullable();
+            $table->integer('skpd_id');
         });
     }
 

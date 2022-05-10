@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Skpd;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -26,7 +27,11 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('dashboard.manajemen-user.create');
+        $skpd = Skpd::select('id', 'nama')->get();
+
+        return view('dashboard.manajemen-user.create', [
+            'skpd' => $skpd,
+        ]);
     }
 
     /**
@@ -44,6 +49,8 @@ class UserController extends Controller
         ]);
 
         $validated['password'] = bcrypt($request->password);
+
+        $validated['skpd_id'] = $request->skpd;
 
         User::create($validated);
 
@@ -69,8 +76,11 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        $skpd = Skpd::select('id', 'nama')->get();
+
         return view('dashboard.manajemen-user.edit', [
-            'user' => $user
+            'user' => $user,
+            'skpd' => $skpd
         ]);
     }
 
@@ -90,6 +100,8 @@ class UserController extends Controller
         ]);
 
         $validated['password'] = bcrypt($request->password);
+
+        $validated['skpd_id'] = $request->skpd;
 
         User::where('id', $user->id)
             ->update($validated);
