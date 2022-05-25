@@ -124,6 +124,51 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <a data-toggle="modal" href="#editAgenda" class="btn btn-primary">Edit</a>
+        </div>
+      </div>
+    </div>
+</div>
+
+{{-- Modal Edit Agenda --}}
+<div class="modal fade" id="editAgenda" tabindex="-1" role="dialog" aria-labelledby="editAgendaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editAgendaModalLabel">Edit Agenda</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form id="formAgenda" method="post" action="/dashboard/agenda-harian">
+            @csrf
+                <div class="form-group">
+                  <label for="namaSKPD">Instansi</label>
+                  <input type="text" class="form-control" id="editNamaSKPD" aria-describedby="namaSKPD" name="namaSKPD" disabled>
+                </div>
+                <div class="form-group">
+                  <label for="namaAgenda">Nama Agenda</label>
+                  <input type="text" class="form-control" id="editNamaAgenda" name="namaAgenda">
+                </div>
+                <div class="form-group">
+                    <label for="start">Waktu Mulai</label>
+                    <input type="text" class="form-control datetimepicker-input" id="editStart" name="start" data-toggle="datetimepicker" data-target="#start">
+                </div>
+                <div class="form-group">
+                    <label for="start">Waktu Selesai</label>
+                    <input type="text" class="form-control datetimepicker-input" id="editEnd" name="end" data-toggle="datetimepicker" data-target="#end">
+                </div>
+                <div class="form-group">
+                    <label for="file">File</label>
+                    <br>
+                    <input type="file" class="file-upload-info file" id="file" name="file">
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <input type="submit" form="formAgenda" class="btn btn-primary" value="Simpan">
         </div>
       </div>
     </div>
@@ -142,6 +187,12 @@
             format: 'YYYY-MM-DD HH:mm',
         });
         $('#end').datetimepicker({
+            format: 'YYYY-MM-DD HH:mm',
+        });
+        $('#editStart').datetimepicker({
+            format: 'YYYY-MM-DD HH:mm',
+        });
+        $('#editEnd').datetimepicker({
             format: 'YYYY-MM-DD HH:mm',
         });
     });
@@ -167,12 +218,24 @@
             $('#lihatAgenda').modal('show');
             $('#detailSKPD').html("-");
             $('#detailAgenda').html(info.event.title);
-            $('#detailStart').html(info.event.start);
-            $('#detailEnd').html(info.event.end);
+            $('#detailStart').html(generateDatabaseDateTime(info.event.start));
+            $('#detailEnd').html(generateDatabaseDateTime(info.event.end));
+
+            $('#editAgenda').on('shown.bs.modal', function (e) {
+                $('#editNamaSKPD').val("-");
+                $('#editNamaAgenda').val(info.event.title);
+                $('#editStart').val(generateDatabaseDateTime(info.event.start));
+                $('#editEnd').val(generateDatabaseDateTime(info.event.end));
+            });
+
+            function generateDatabaseDateTime(date) {
+                return date.toISOString().replace("T"," ").substring(0, 16);
+            }
         }
       });
       calendar.render();
     });
+
 
   </script>
 @endsection
