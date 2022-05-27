@@ -22,12 +22,12 @@
         <button class="btn btn-success" data-toggle="modal" data-target="#tambahAgenda">Tambah Agenda</button>
     </div>
     <div class="row">
-        <div class="card col-lg-6 mt-3">
+        <div class="card col-12 mt-3">
             <div class="card-body">
                 <div id='calendar'></div>
             </div>
         </div>
-        <div class="card col-lg-6 mt-3">
+        {{-- <div class="card col-lg-6 mt-3">
             <div class="card-header">
                 <h3>Daftar Agenda</h3>
             </div>
@@ -36,7 +36,7 @@
                 <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
                 <a href="#" class="btn btn-primary">Go somewhere</a>
             </div>
-        </div>
+        </div> --}}
     </div>
 </div>
 
@@ -141,7 +141,8 @@
           </button>
         </div>
         <div class="modal-body">
-            <form id="formAgenda" method="post" action="/dashboard/agenda-harian">
+            <form id="formEditAgenda" method="post" action="">
+            @method('PUT')
             @csrf
                 <div class="form-group">
                   <label for="namaSKPD">Instansi</label>
@@ -153,11 +154,11 @@
                 </div>
                 <div class="form-group">
                     <label for="start">Waktu Mulai</label>
-                    <input type="text" class="form-control datetimepicker-input" id="editStart" name="start" data-toggle="datetimepicker" data-target="#start">
+                    <input type="text" class="form-control datetimepicker-input" id="editStart" name="start" data-toggle="datetimepicker" data-target="#editStart">
                 </div>
                 <div class="form-group">
                     <label for="start">Waktu Selesai</label>
-                    <input type="text" class="form-control datetimepicker-input" id="editEnd" name="end" data-toggle="datetimepicker" data-target="#end">
+                    <input type="text" class="form-control datetimepicker-input" id="editEnd" name="end" data-toggle="datetimepicker" data-target="#editEnd">
                 </div>
                 <div class="form-group">
                     <label for="file">File</label>
@@ -168,7 +169,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <input type="submit" form="formAgenda" class="btn btn-primary" value="Simpan">
+          <input type="submit" form="formEditAgenda" class="btn btn-primary" value="Simpan">
         </div>
       </div>
     </div>
@@ -205,6 +206,7 @@
     document.addEventListener('DOMContentLoaded', function() {
       var calendarEl = document.getElementById('calendar');
       var calendar = new FullCalendar.Calendar(calendarEl, {
+        locale: 'id',
         headerToolbar: {
             center: 'dayGridMonth,listWeek' // buttons for switching between views
         },
@@ -214,6 +216,7 @@
             '/dashboard/agenda-harian/fetch',
         ],
         eventClick: function(info) {
+            console.log(info.event.id);
             // alert('Event: ' + info.event.title);
             $('#lihatAgenda').modal('show');
             $('#detailSKPD').html("-");
@@ -226,10 +229,18 @@
                 $('#editNamaAgenda').val(info.event.title);
                 $('#editStart').val(generateDatabaseDateTime(info.event.start));
                 $('#editEnd').val(generateDatabaseDateTime(info.event.end));
+                $('#formEditAgenda').attr('action', '/dashboard/agenda-harian/' + info.event.id);
             });
 
             function generateDatabaseDateTime(date) {
-                return date.toISOString().replace("T"," ").substring(0, 16);
+                if (date != null) {
+                  var tzoffset = (new Date()).getTimezoneOffset() * 60000; //offset in milliseconds
+                  var localISOTime = (new Date(date - tzoffset)).toISOString().replace("T"," ").substring(0, 16);
+
+                  return localISOTime;
+                } else {
+                  return "";
+                }
             }
         }
       });

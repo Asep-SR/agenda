@@ -30,4 +30,16 @@ class EventController extends Controller
 
         return response()->json($events);
     }
+
+    public function updateEvent(Request $request, Event $event)
+    {
+        Event::where('id', $event->id)
+            ->update([
+                'title' => $request->namaAgenda,
+                'start' => $request->start,
+                'end' => $request->end
+            ]);
+
+        return redirect('/dashboard/agenda-harian')->with('success', 'Berhasil mengubah data Agenda');
+    }
 }
