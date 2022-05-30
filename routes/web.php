@@ -47,6 +47,7 @@ Route::put('/dashboard/setting/{user}', [UserController::class, 'settingStore'])
 
 // Agenda Harian
 Route::get('/dashboard/agenda-harian', [EventController::class, 'index'])->middleware('auth');
-Route::post('/dashboard/agenda-harian', [EventController::class, 'storeEvent'])->middleware('auth');
+Route::post('/dashboard/agenda-harian', [EventController::class, 'store'])->middleware('auth');
 Route::get('/dashboard/agenda-harian/fetch', [EventController::class, 'fetch'])->middleware('auth');
-Route::put('/dashboard/agenda-harian/{event}', [EventController::class, 'updateEvent'])->middleware('auth');
+Route::put('/dashboard/agenda-harian/{event}', [EventController::class, 'update'])->middleware('auth');
+Route::delete('/dashboard/agenda-harian/{event}', [EventController::class, 'destroy'])->middleware('auth');

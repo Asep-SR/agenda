@@ -1,7 +1,7 @@
 <div class="sidebar-menu">
     <div class="sidebar-header">
         <div class="logo">
-            <a href="/dashboard"><img src="{{ asset('assets/images/icon/logo.png') }}" alt="logo"></a>
+            <a href="/dashboard"><img src="{{ asset('assets/images/icon/SIAGAN.png') }}" alt="logo"></a>
         </div>
     </div>
     <div class="main-menu">

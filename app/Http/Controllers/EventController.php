@@ -12,7 +12,7 @@ class EventController extends Controller
         return view('dashboard.agenda-harian.index');
     }
 
-    public function storeEvent(Request $request)
+    public function store(Request $request)
     {
         $event = new Event;
         $event->title = $request->namaAgenda;
@@ -31,7 +31,7 @@ class EventController extends Controller
         return response()->json($events);
     }
 
-    public function updateEvent(Request $request, Event $event)
+    public function update(Request $request, Event $event)
     {
         Event::where('id', $event->id)
             ->update([
@@ -41,5 +41,12 @@ class EventController extends Controller
             ]);
 
         return redirect('/dashboard/agenda-harian')->with('success', 'Berhasil mengubah data Agenda');
+    }
+
+    public function destroy(Event $event)
+    {
+        Event::destroy($event->id);
+
+        return redirect('/dashboard/agenda-harian')->with('success', 'Berhasil menghapus data Agenda');
     }
 }

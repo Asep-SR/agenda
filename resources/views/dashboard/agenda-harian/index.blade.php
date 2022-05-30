@@ -125,6 +125,7 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
           <a data-toggle="modal" href="#editAgenda" class="btn btn-primary">Edit</a>
+          <a data-toggle="modal" href="#hapusAgenda" class="btn btn-danger">Hapus</a>
         </div>
       </div>
     </div>
@@ -170,6 +171,31 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
           <input type="submit" form="formEditAgenda" class="btn btn-primary" value="Simpan">
+        </div>
+      </div>
+    </div>
+</div>
+
+{{-- Modal Hapus Agenda --}}
+<div class="modal fade" id="hapusAgenda" tabindex="-1" role="dialog" aria-labelledby="hapusAgendaLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="hapusAgendaModalLabel">Hapus Agenda</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <p>Yakin ingin menghapus agenda ini?</p>
+            <form id="formHapusAgenda" method="post" action="">
+            @method('DELETE')
+            @csrf
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <input type="submit" form="formHapusAgenda" class="btn btn-danger" value="Hapus">
         </div>
       </div>
     </div>
@@ -230,6 +256,10 @@
                 $('#editStart').val(generateDatabaseDateTime(info.event.start));
                 $('#editEnd').val(generateDatabaseDateTime(info.event.end));
                 $('#formEditAgenda').attr('action', '/dashboard/agenda-harian/' + info.event.id);
+            });
+
+            $('#hapusAgenda').on('shown.bs.modal', function (e) {
+                $('#formHapusAgenda').attr('action', '/dashboard/agenda-harian/' + info.event.id);
             });
 
             function generateDatabaseDateTime(date) {
