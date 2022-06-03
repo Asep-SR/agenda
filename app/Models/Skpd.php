@@ -17,4 +17,9 @@ class Skpd extends Model
     {
         return $this->hasMany(User::class, 'skpd_id');
     }
+
+    public function events()
+    {
+        return $this->hasManyThrough(Event::class, User::class, 'skpd_id', 'user_id');
+    }
 }

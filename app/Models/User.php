@@ -42,4 +42,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Skpd::class, 'skpd_id');
     }
+
+    public function events()
+    {
+        return $this->hasMany(Event::class, 'user_id');
+    }
 }

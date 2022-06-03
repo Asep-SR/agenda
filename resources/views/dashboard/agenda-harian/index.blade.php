@@ -55,7 +55,7 @@
             @csrf
                 <div class="form-group">
                   <label for="namaSKPD">Instansi</label>
-                  <input type="text" class="form-control" id="namaSKPD" aria-describedby="namaSKPD" name="namaSKPD" disabled>
+                  <input type="text" class="form-control" id="namaSKPD" aria-describedby="namaSKPD" name="namaSKPD" value="{{ auth()->user()->skpd->nama }}" disabled>
                 </div>
                 <div class="form-group">
                   <label for="namaAgenda">Nama Agenda</label>
@@ -228,7 +228,7 @@
 {{-- FullCalendar.io --}}
 <script src="{{ asset('assets/js/fullcalendar/lib/main.min.js') }}"></script>
 <script>
-
+    // document.cookie = "eventId = 1";
     document.addEventListener('DOMContentLoaded', function() {
       var calendarEl = document.getElementById('calendar');
       var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -242,16 +242,40 @@
             '/dashboard/agenda-harian/fetch',
         ],
         eventClick: function(info) {
-            console.log(info.event.id);
+            // console.log(info);
+            // document.cookie = "eventId = " + info.event.id;
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $.ajax({
+                type: 'POST',
+                url: '/dashboard/agenda-harian/getNamaSkpd',
+                data: {
+                    'eventId' : info.event.id
+                },
+                success: function (response) {
+                    console.log(response);
+                    $('#detailSKPD').html(response);
+                    $('#editNamaSKPD').val(response);
+                },
+                error: function () {
+                    alert("No");
+                }
+            });
+
             // alert('Event: ' + info.event.title);
             $('#lihatAgenda').modal('show');
-            $('#detailSKPD').html("-");
+            // $('#detailSKPD').html('{{ $events->find($_COOKIE['eventId'])->user->skpd->nama }}');
             $('#detailAgenda').html(info.event.title);
             $('#detailStart').html(generateDatabaseDateTime(info.event.start));
             $('#detailEnd').html(generateDatabaseDateTime(info.event.end));
 
             $('#editAgenda').on('shown.bs.modal', function (e) {
-                $('#editNamaSKPD').val("-");
+                // $('#editNamaSKPD').val('{{ $events->find($_COOKIE['eventId'])->user->skpd->nama }}');
                 $('#editNamaAgenda').val(info.event.title);
                 $('#editStart').val(generateDatabaseDateTime(info.event.start));
                 $('#editEnd').val(generateDatabaseDateTime(info.event.end));

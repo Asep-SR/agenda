@@ -9,7 +9,9 @@ class EventController extends Controller
 {
     public function index()
     {
-        return view('dashboard.agenda-harian.index');
+        $events = Event::all();
+
+        return view('dashboard.agenda-harian.index', ['events' => $events]);
     }
 
     public function store(Request $request)
@@ -48,5 +50,11 @@ class EventController extends Controller
         Event::destroy($event->id);
 
         return redirect('/dashboard/agenda-harian')->with('success', 'Berhasil menghapus data Agenda');
+    }
+
+    public function getNamaSkpd(Request $request)
+    {
+        $event = Event::find($request->eventId)->user->skpd->nama;
+        return response()->json($event);
     }
 }
