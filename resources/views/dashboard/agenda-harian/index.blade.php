@@ -51,7 +51,7 @@
           </button>
         </div>
         <div class="modal-body">
-            <form id="formAgenda" method="post" action="/dashboard/agenda-harian">
+            <form id="formAgenda" method="post" action="/dashboard/agenda-harian" enctype="multipart/form-data">
             @csrf
                 <div class="form-group">
                   <label for="namaSKPD">Instansi</label>
@@ -228,7 +228,6 @@
 {{-- FullCalendar.io --}}
 <script src="{{ asset('assets/js/fullcalendar/lib/main.min.js') }}"></script>
 <script>
-    // document.cookie = "eventId = 1";
     document.addEventListener('DOMContentLoaded', function() {
       var calendarEl = document.getElementById('calendar');
       var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -243,7 +242,6 @@
         ],
         eventClick: function(info) {
             // console.log(info);
-            // document.cookie = "eventId = " + info.event.id;
 
             $.ajaxSetup({
                 headers: {
@@ -258,24 +256,40 @@
                     'eventId' : info.event.id
                 },
                 success: function (response) {
-                    console.log(response);
+                    // console.log(response);
                     $('#detailSKPD').html(response);
                     $('#editNamaSKPD').val(response);
                 },
                 error: function () {
-                    alert("No");
+                    console.log('Error');
+                }
+            });
+
+            $.ajax({
+                type: 'POST',
+                url: '/dashboard/agenda-harian/getUrlFile',
+                data: {
+                    'eventId' : info.event.id
+                },
+                success: function (response) {
+                    if (response == null || response == "") {
+                        $('#detailFile').html("Tidak ada file");
+                    } else {
+                        $('#detailFile').html("<a href=\"" + response + "\"> Lampiran </a>");
+                    }
+                },
+                error: function () {
+                    console.log('Error');
                 }
             });
 
             // alert('Event: ' + info.event.title);
             $('#lihatAgenda').modal('show');
-            // $('#detailSKPD').html('{{ $events->find($_COOKIE['eventId'])->user->skpd->nama }}');
             $('#detailAgenda').html(info.event.title);
             $('#detailStart').html(generateDatabaseDateTime(info.event.start));
             $('#detailEnd').html(generateDatabaseDateTime(info.event.end));
 
             $('#editAgenda').on('shown.bs.modal', function (e) {
-                // $('#editNamaSKPD').val('{{ $events->find($_COOKIE['eventId'])->user->skpd->nama }}');
                 $('#editNamaAgenda').val(info.event.title);
                 $('#editStart').val(generateDatabaseDateTime(info.event.start));
                 $('#editEnd').val(generateDatabaseDateTime(info.event.end));

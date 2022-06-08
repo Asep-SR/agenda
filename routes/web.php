@@ -52,3 +52,4 @@ Route::get('/dashboard/agenda-harian/fetch', [EventController::class, 'fetch'])-
 Route::put('/dashboard/agenda-harian/{event}', [EventController::class, 'update'])->middleware('auth');
 Route::delete('/dashboard/agenda-harian/{event}', [EventController::class, 'destroy'])->middleware('auth');
 Route::post('/dashboard/agenda-harian/getNamaSkpd', [EventController::class, 'getNamaSkpd'])->middleware('auth');
+Route::post('/dashboard/agenda-harian/getUrlFile', [EventController::class, 'getUrlFile'])->middleware('auth');
