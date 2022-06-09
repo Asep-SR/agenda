@@ -39,7 +39,8 @@ class EventController extends Controller
             ->update([
                 'title' => $request->namaAgenda,
                 'start' => $request->start,
-                'end' => $request->end
+                'end' => $request->end,
+                'file' => $request->file('file')->store('files', 'public')
             ]);
 
         return redirect('/dashboard/agenda-harian')->with('success', 'Berhasil mengubah data Agenda');

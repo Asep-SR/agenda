@@ -142,7 +142,7 @@
           </button>
         </div>
         <div class="modal-body">
-            <form id="formEditAgenda" method="post" action="">
+            <form id="formEditAgenda" method="post" action="" enctype="multipart/form-data">
             @method('PUT')
             @csrf
                 <div class="form-group">
@@ -284,7 +284,9 @@
             });
 
             // alert('Event: ' + info.event.title);
-            $('#lihatAgenda').modal('show');
+            setTimeout(function(){
+                $('#lihatAgenda').modal('show');
+            }, 1000);
             $('#detailAgenda').html(info.event.title);
             $('#detailStart').html(generateDatabaseDateTime(info.event.start));
             $('#detailEnd').html(generateDatabaseDateTime(info.event.end));
