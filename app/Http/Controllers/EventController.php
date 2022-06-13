@@ -28,9 +28,16 @@ class EventController extends Controller
 
     public function fetch()
     {
-        $events = Event::all();
+        if (auth()->user()->is_admin == 1 || auth()->user()->is_bupati == 1)
+        {
+            $events = Event::all();
 
-        return response()->json($events);
+            return response()->json($events);
+        } else {
+            $events = Event::where('user_id', auth()->user()->id)->get();
+
+            return response()->json($events);
+        }
     }
 
     public function update(Request $request, Event $event)
